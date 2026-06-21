@@ -8,6 +8,9 @@ const navLinks = [
   { label: 'CONTACT', href: '#contact', id: 'contact' },
 ];
 
+// Permanent production URL of the second ("Lab") portfolio site
+const SECOND_SITE_URL = 'https://yash-portfolio-lab.vercel.app/';
+
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -82,6 +85,20 @@ export function Navbar() {
               </a>
             );
           })}
+
+          {/* External link to the second (3D "Lab") portfolio site */}
+          <a
+            href={SECOND_SITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Explore the 3D Lab portfolio"
+            className="font-label uppercase tracking-widest text-xs transition-colors duration-200"
+            style={{ color: '#b8fd4b' }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            LAB &#x2197;
+          </a>
         </nav>
 
         {/* Right - Resume (Desktop) & Hamburger (Mobile) */}
@@ -141,6 +158,17 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+
+              {/* External link to the second (3D "Lab") portfolio site */}
+              <a
+                href={SECOND_SITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMenuOpen(false)}
+                className="font-headline font-black text-4xl sm:text-5xl tracking-widest text-primary transition-opacity duration-300 uppercase hover:opacity-70"
+              >
+                LAB &#x2197;
+              </a>
             </div>
             
             <a
