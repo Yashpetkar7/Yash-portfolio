@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#020617"/><stop offset="1" stop-color="#0e7490"/></linearGradient></defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <g opacity="0.18" stroke="#67e8f9"><path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200M0 630h1200"/><path d="M120 0v675M240 0v675M360 0v675M480 0v675M600 0v675M720 0v675M840 0v675M960 0v675M1080 0v675"/></g>
+  <rect x="90" y="80" width="1020" height="515" rx="28" fill="#020617" opacity="0.82" stroke="#67e8f9" stroke-opacity="0.35"/>
+  <text x="135" y="150" font-family="Arial" font-size="42" font-weight="700" fill="#e0f2fe">AI Business Intelligence Dashboard</text>
+  <rect x="135" y="205" width="290" height="140" rx="18" fill="#0f172a" stroke="#38bdf8" stroke-opacity="0.45"/>
+  <text x="160" y="260" font-family="Arial" font-size="26" fill="#7dd3fc">LLM Insights</text><text x="160" y="305" font-family="Arial" font-size="44" font-weight="700" fill="#f8fafc">Actionable</text>
+  <rect x="460" y="205" width="290" height="140" rx="18" fill="#0f172a" stroke="#818cf8" stroke-opacity="0.45"/>
+  <text x="485" y="260" font-family="Arial" font-size="26" fill="#c4b5fd">Voice Query</text><text x="485" y="305" font-family="Arial" font-size="44" font-weight="700" fill="#f8fafc">Conversational</text>
+  <rect x="785" y="205" width="290" height="140" rx="18" fill="#0f172a" stroke="#14b8a6" stroke-opacity="0.45"/>
+  <text x="810" y="260" font-family="Arial" font-size="26" fill="#5eead4">Decision Support</text><text x="810" y="305" font-family="Arial" font-size="44" font-weight="700" fill="#f8fafc">Data → Value</text>
+  <polyline points="150,510 300,430 460,470 620,360 780,400 1000,290" fill="none" stroke="#67e8f9" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="620" cy="360" r="12" fill="#f59e0b"/><circle cx="1000" cy="290" r="12" fill="#22c55e"/>
+</svg>
