@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import ScrambleText from '../components/ui/ScrambleText';
 import { RevealItem } from '../components/ui/StaggerReveal';
 import { useInViewReveal } from '../hooks/useInViewReveal';
@@ -9,6 +9,22 @@ import { heroContent, socialLinks } from '../data/portfolioData';
 const LazyHeroCanvas = lazy(() =>
   import('../components/three/HeroCanvas').then((module) => ({ default: module.HeroCanvas })),
 );
+
+function useCityClocks() {
+  const format = () => {
+    const fmt = (tz) =>
+      new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit' }).format(new Date());
+    return { dxb: fmt('Asia/Dubai'), bom: fmt('Asia/Kolkata') };
+  };
+  const [clocks, setClocks] = useState(format);
+
+  useEffect(() => {
+    const timer = setInterval(() => setClocks(format()), 30000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return clocks;
+}
 
 function getSocialIconSrc(icon) {
   if (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('data:') || icon.startsWith('/')) {
@@ -21,6 +37,7 @@ function getSocialIconSrc(icon) {
 
 export function HeroSection({ introActive = true }) {
   const displayText = useTypewriter(heroContent.subtitle, 18);
+  const clocks = useCityClocks();
   const prefersReducedMotion = usePrefersReducedMotion();
   const canUseWebGL = typeof window !== 'undefined' && !window.matchMedia('(max-width: 768px)').matches;
   const { elementRef: heroLoadRef, isVisible: isHeroVisible } = useInViewReveal({ threshold: 0.05, rootMargin: '200px 0px', once: true });
@@ -56,6 +73,18 @@ export function HeroSection({ introActive = true }) {
           threshold={0.25}
           delay={80}
         >
+          {/* Live availability line */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1 mb-5 font-mono text-[11px] md:text-xs tracking-[0.2em] uppercase">
+            <span className="flex items-center gap-2 text-primary">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+              </span>
+              Open to AI · Data & Product roles
+            </span>
+            <span className="text-on-surface-variant/50">DXB {clocks.dxb} · BOM {clocks.bom}</span>
+          </div>
+
           <h1 className="hero-title-container text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] xl:text-[8rem] font-black font-headline tracking-tighter text-on-surface leading-[0.85] max-w-full overflow-visible">
             <div className="kinetic-text"><ScrambleText text={heroContent.firstName} trigger={introActive} delay={200} style={{ display: 'block' }} /></div>
             <div className="kinetic-text"><ScrambleText text={heroContent.lastName} trigger={introActive} delay={450} style={{ display: 'block' }} /></div>
@@ -66,9 +95,13 @@ export function HeroSection({ introActive = true }) {
             <span className="animate-blink">|</span>
           </p>
 
-          <div className="flex flex-wrap justify-center lg:justify-start gap-4 mt-8 md:mt-12 mb-10">
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 md:mt-12 mb-10">
             <a href="#experience-projects" className="btn-primary interactive-button">VIEW_WORK</a>
             <a href="#contact" className="btn-secondary interactive-button">CONTACT</a>
+            <span className="hidden lg:inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant/50">
+              <kbd className="border border-outline-variant/50 px-1.5 py-0.5 text-primary/80">/</kbd>
+              open terminal
+            </span>
           </div>
 
           <div className="flex gap-4 flex-wrap pointer-events-auto justify-center lg:justify-start border-t border-outline-variant/20 pt-8 w-full max-w-lg mt-8">
