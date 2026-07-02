@@ -19,8 +19,8 @@ function getSocialIconSrc(icon) {
   return `https://cdn.simpleicons.org/${baseIcon}`;
 }
 
-export function HeroSection() {
-  const displayText = useTypewriter(heroContent.subtitle, 50);
+export function HeroSection({ introActive = true }) {
+  const displayText = useTypewriter(heroContent.subtitle, 18);
   const prefersReducedMotion = usePrefersReducedMotion();
   const canUseWebGL = typeof window !== 'undefined' && !window.matchMedia('(max-width: 768px)').matches;
   const { elementRef: heroLoadRef, isVisible: isHeroVisible } = useInViewReveal({ threshold: 0.05, rootMargin: '200px 0px', once: true });
@@ -46,7 +46,7 @@ export function HeroSection() {
         <div className="hero-grid-glow absolute inset-0" />
       </div>
 
-      <div className="absolute inset-0 z-[1] opacity-10 pointer-events-none hero-grid-overlay" />
+      <div className="hero-legibility-veil absolute inset-0 z-[1] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 pb-12 md:pb-20 mt-12">
         
@@ -57,8 +57,8 @@ export function HeroSection() {
           delay={80}
         >
           <h1 className="hero-title-container text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] xl:text-[8rem] font-black font-headline tracking-tighter text-on-surface leading-[0.85] max-w-full overflow-visible">
-            <div className="kinetic-text"><ScrambleText text={heroContent.firstName} delay={2800} style={{ display: 'block' }} /></div>
-            <div className="kinetic-text"><ScrambleText text={heroContent.lastName} delay={3100} style={{ display: 'block' }} /></div>
+            <div className="kinetic-text"><ScrambleText text={heroContent.firstName} trigger={introActive} delay={200} style={{ display: 'block' }} /></div>
+            <div className="kinetic-text"><ScrambleText text={heroContent.lastName} trigger={introActive} delay={450} style={{ display: 'block' }} /></div>
           </h1>
 
           <p className="mt-6 md:mt-8 max-w-xl font-mono text-base md:text-lg text-on-surface-variant min-h-[48px]">

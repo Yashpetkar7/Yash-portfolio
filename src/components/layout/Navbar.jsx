@@ -92,11 +92,12 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             title="Explore the 3D Lab portfolio"
-            className="font-label uppercase tracking-widest text-xs transition-colors duration-200"
-            style={{ color: '#b8fd4b' }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+            className="group flex items-center gap-2 font-label uppercase tracking-widest text-xs border border-primary/40 px-3 py-1.5 text-primary transition-all duration-200 hover:bg-primary hover:text-black hover:border-primary"
           >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 group-hover:bg-black" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary group-hover:bg-black" />
+            </span>
             LAB &#x2197;
           </a>
         </nav>
@@ -112,7 +113,7 @@ export function Navbar() {
               border: '1px solid #b8fd4b',
               color: '#b8fd4b',
               padding: '4px 14px',
-              fontFamily: 'Syne Mono, monospace',
+              fontFamily: 'JetBrains Mono, monospace',
               fontSize: '11px',
               letterSpacing: '0.15em',
               textDecoration: 'none',

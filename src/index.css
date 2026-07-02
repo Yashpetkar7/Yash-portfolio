@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
 
 @tailwind base;
@@ -124,11 +124,16 @@
 
   .hero-grid-fallback {
     background-image:
-      linear-gradient(rgba(184, 253, 75, 0.13) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(184, 253, 75, 0.09) 1px, transparent 1px);
+      linear-gradient(rgba(184, 253, 75, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184, 253, 75, 0.05) 1px, transparent 1px);
     background-size: 44px 44px, 44px 44px;
     background-repeat: repeat;
     animation: hero-grid-pan 18s linear infinite;
+  }
+
+  /* Darkens the area behind the hero copy so the headline stays readable over the grid */
+  .hero-legibility-veil {
+    background: radial-gradient(ellipse 85% 75% at 32% 50%, rgba(14, 14, 14, 0.78) 0%, rgba(14, 14, 14, 0.38) 52%, transparent 78%);
   }
 
   .hero-grid-overlay {

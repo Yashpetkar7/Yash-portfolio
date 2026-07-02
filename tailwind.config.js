@@ -78,7 +78,7 @@ export default {
         headline: ["Space Grotesk", "sans-serif"],
         body: ["Inter", "sans-serif"],
         label: ["Space Grotesk", "sans-serif"],
-        mono: ["Syne Mono", "monospace"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       borderRadius: {
         DEFAULT: "0px",
