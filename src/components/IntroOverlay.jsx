@@ -22,13 +22,17 @@ export default function IntroOverlay({ onDone }) {
     setMode((current) => (current === 'video' ? 'text' : current));
   }, []);
 
-  // Click or keypress skips the intro
+  // Click or keypress skips the intro (modifier keys alone don't count)
   useEffect(() => {
+    const onKeySkip = (e) => {
+      if (['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) return;
+      finish();
+    };
     window.addEventListener('pointerdown', finish);
-    window.addEventListener('keydown', finish);
+    window.addEventListener('keydown', onKeySkip);
     return () => {
       window.removeEventListener('pointerdown', finish);
-      window.removeEventListener('keydown', finish);
+      window.removeEventListener('keydown', onKeySkip);
     };
   }, [finish]);
 

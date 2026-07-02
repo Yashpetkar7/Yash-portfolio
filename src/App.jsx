@@ -52,7 +52,7 @@ export default function App() {
       </MainLayout>
 
       <BackToTop />
-      <Terminal />
+      <Terminal disabled={showIntro} />
 
       <AnimatePresence mode="wait">
         {showIntro ? <IntroOverlay key="portfolio-intro" onDone={dismissIntro} /> : null}

@@ -108,7 +108,7 @@ const COMMANDS = {
     line('dim', "  type 'email' to open your mail client"),
   ],
   email: () => {
-    window.open(`mailto:${contactContent.email}`, '_self');
+    window.location.href = `mailto:${contactContent.email}`;
     return [line('ok', `opening mail → ${contactContent.email}`)];
   },
   resume: () => {
@@ -138,7 +138,7 @@ const COMMANDS = {
 
 const COMMAND_NAMES = [...Object.keys(COMMANDS), 'sudo hire-me', 'clear', 'exit'];
 
-export default function Terminal() {
+export default function Terminal({ disabled = false }) {
   const [open, setOpen] = useState(false);
   const [lines, setLines] = useState(BANNER);
   const [input, setInput] = useState('');
@@ -151,6 +151,7 @@ export default function Terminal() {
   // Global shortcuts: "/" or "`" opens (outside form fields), Escape closes
   useEffect(() => {
     const onKey = (e) => {
+      if (disabled) return;
       const tag = (e.target.tagName || '').toLowerCase();
       const typing = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
       if (!open && !typing && (e.key === '/' || e.key === '`')) {
@@ -162,7 +163,7 @@ export default function Terminal() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
+  }, [open, disabled]);
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
@@ -194,7 +195,9 @@ export default function Terminal() {
       hireTimers.current.push(setTimeout(() => append([l]), delay));
     });
     hireTimers.current.push(
-      setTimeout(() => window.open(`mailto:${contactContent.email}?subject=Let's talk`, '_self'), 3600),
+      setTimeout(() => {
+        window.location.href = `mailto:${contactContent.email}?subject=Let's talk`;
+      }, 3600),
     );
   }, [append]);
 
@@ -232,7 +235,9 @@ export default function Terminal() {
   );
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Escape') {
+      setOpen(false);
+    } else if (e.key === 'Enter') {
       execute(input);
       setInput('');
     } else if (e.key === 'ArrowUp') {
@@ -265,34 +270,50 @@ export default function Terminal() {
   return (
     <>
       {/* Launcher (all viewports; the only way in on touch) */}
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open terminal"
-        className="fixed bottom-6 left-6 z-40 font-mono text-[10px] tracking-[0.2em] uppercase text-primary border border-primary/40 bg-surface/80 backdrop-blur px-3 py-2 hover:bg-primary hover:text-black transition-colors duration-200"
-      >
-        &gt;_ terminal
-      </button>
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          aria-label="Open terminal"
+          className="fixed bottom-6 left-6 z-30 font-mono text-[10px] tracking-[0.2em] uppercase text-primary border border-primary/40 bg-surface/80 backdrop-blur px-3 py-2 hover:bg-primary hover:text-black transition-colors duration-200"
+        >
+          &gt;_ terminal
+        </button>
+      )}
 
       <AnimatePresence>
+        {open ? (
+          <motion.div
+            key="terminal-backdrop"
+            className="fixed inset-0 z-[890] bg-black/20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+        ) : null}
         {open ? (
           <motion.div
             key="terminal"
             role="dialog"
             aria-label="Portfolio terminal"
-            className="fixed inset-x-3 bottom-3 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:bottom-8 md:w-[720px] max-w-full z-[900]"
+            // Centering lives on this static wrapper; framer only animates the inner
+            // panel — framer owns `transform`, so Tailwind translate classes get wiped
+            className="fixed inset-x-3 bottom-3 md:inset-x-0 md:bottom-8 z-[900] md:flex md:justify-center pointer-events-none"
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 40, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="border border-primary/30 bg-black/90 backdrop-blur-xl shadow-[0_0_60px_rgba(184,253,75,0.08)]">
+            <div className="pointer-events-auto w-full md:w-[720px] max-w-full border border-primary/30 bg-black/90 backdrop-blur-xl shadow-[0_0_60px_rgba(184,253,75,0.08)]">
               {/* Title bar */}
-              <div className="flex items-center justify-between px-4 py-2 border-b border-primary/20">
+              <div className="flex items-center justify-between pl-4 border-b border-primary/20">
                 <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-primary">yash.os — shell</span>
                 <button
                   onClick={() => setOpen(false)}
                   aria-label="Close terminal"
-                  className="font-mono text-xs text-on-surface-variant hover:text-primary px-2"
+                  className="font-mono text-sm text-on-surface-variant hover:text-primary hover:bg-primary/10 px-4 py-2.5"
                 >
                   ✕
                 </button>
@@ -301,6 +322,7 @@ export default function Terminal() {
               {/* Output */}
               <div
                 ref={scrollRef}
+                data-lenis-prevent
                 className="h-[46vh] md:h-80 overflow-y-auto px-4 py-3 font-mono text-[12px] md:text-[13px] leading-relaxed"
                 onClick={() => inputRef.current?.focus()}
               >
