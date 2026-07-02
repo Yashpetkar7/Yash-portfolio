@@ -74,9 +74,50 @@ export function AboutSkillsSection() {
             </div>
           </RevealItem>
 
-          <RevealItem threshold={0.15} delay={100} className="w-full overflow-hidden text-left">
+          <RevealItem threshold={0.15} delay={100} className="w-full text-left">
             <h3 className="font-mono text-[10px] text-primary tracking-widest uppercase mb-6 pl-2 border-l border-primary/30">MY TECH STACK</h3>
-            <div className="flex flex-col gap-6">
+
+            {/* Category grid */}
+            <div className="grid md:grid-cols-2 gap-4 mb-12">
+              {skillsData.map((skill, idx) => (
+                <div
+                  key={skill.label}
+                  className="interactive-card border border-outline-variant/30 bg-surface-container-low/60 p-5 md:p-6"
+                >
+                  <div className="flex items-baseline justify-between mb-1">
+                    <h4 className="font-headline font-bold text-lg md:text-xl text-on-surface tracking-tight">
+                      {skill.label}
+                    </h4>
+                    <span className="font-mono text-[10px] text-primary/60 tracking-widest">
+                      0{idx + 1}
+                    </span>
+                  </div>
+                  <p className="font-label text-sm text-on-surface-variant mb-4">{skill.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {skill.icons.map((icon) => (
+                      <span
+                        key={icon.name}
+                        className="flex items-center gap-1.5 border border-outline-variant/30 bg-surface px-2.5 py-1.5 font-mono text-[10px] tracking-wider uppercase text-on-surface-variant hover:border-primary/50 hover:text-on-surface transition-colors"
+                      >
+                        <img
+                          src={icon.url}
+                          alt=""
+                          width={14}
+                          height={14}
+                          loading="lazy"
+                          className="object-contain"
+                          onError={e => e.target.style.display = 'none'}
+                        />
+                        {icon.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Ticker */}
+            <div className="flex flex-col gap-6 overflow-hidden">
               {renderTrack(row1Icons, 'left')}
               {renderTrack(row2Icons, 'right')}
             </div>

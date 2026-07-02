@@ -37,6 +37,7 @@ const COMMANDS = {
     line('txt', '  about        who is yash'),
     line('txt', '  projects     selected work'),
     line('txt', '  skills       what he works with'),
+    line('txt', '  stack        the full tech stack'),
     line('txt', '  experience   career history'),
     line('txt', '  education    academic background'),
     line('txt', '  status       availability + local time'),
@@ -70,6 +71,12 @@ const COMMANDS = {
       line('ok', `• ${s.label}`),
       line('dim', `  ${s.description}`),
     ]),
+  stack: () =>
+    skillsData.flatMap((s) => [
+      line('ok', `${s.label}`),
+      line('txt', `  ${s.icons.map((i) => i.name).join(' · ')}`),
+    ]),
+  tech: () => COMMANDS.stack(),
   experience: () =>
     experienceData.flatMap((e) => [
       line('ok', `${e.year} — ${e.endYear} · ${e.title}`),

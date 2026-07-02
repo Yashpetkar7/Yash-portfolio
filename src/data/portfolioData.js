@@ -37,6 +37,7 @@ export const skillsData = [
     icons: [
       { name: 'Python', url: 'https://cdn.simpleicons.org/python/3776AB' },
       { name: 'OpenAI', url: 'https://cdn.simpleicons.org/openai/FFFFFF' },
+      { name: 'LLM APIs', url: 'https://cdn.simpleicons.org/langchain/00A67E' },
       { name: 'SQL', url: 'https://cdn.simpleicons.org/postgresql/336791' },
     ],
   },
@@ -45,7 +46,7 @@ export const skillsData = [
     description: 'Dashboards, reporting, and data storytelling',
     icons: [
       { name: 'Power BI', url: 'https://cdn.simpleicons.org/powerbi/F2C811' },
-      { name: 'Analytics', url: 'https://cdn.simpleicons.org/googleanalytics/E37400' },
+      { name: 'Google Analytics', url: 'https://cdn.simpleicons.org/googleanalytics/E37400' },
       { name: 'Chart.js', url: 'https://cdn.simpleicons.org/chartdotjs/FF6384' },
     ],
   },
@@ -53,18 +54,24 @@ export const skillsData = [
     label: 'Full-Stack Development',
     description: 'Web apps and operational systems',
     icons: [
+      { name: 'JavaScript', url: 'https://cdn.simpleicons.org/javascript/F7DF1E' },
       { name: 'React', url: 'https://cdn.simpleicons.org/react/61DAFB' },
       { name: 'Next.js', url: 'https://cdn.simpleicons.org/nextdotjs/FFFFFF' },
       { name: 'Node.js', url: 'https://cdn.simpleicons.org/nodedotjs/5FA04E' },
+      { name: 'HTML5', url: 'https://cdn.simpleicons.org/html5/E34F26' },
+      { name: 'CSS', url: 'https://cdn.simpleicons.org/css/1572B6' },
+      { name: 'MySQL', url: 'https://cdn.simpleicons.org/mysql/4479A1' },
+      { name: 'Tailwind CSS', url: 'https://cdn.simpleicons.org/tailwindcss/06B6D4' },
     ],
   },
   {
     label: 'Product & Strategy',
     description: 'Practical, scalable, value-driven systems',
     icons: [
-      { name: 'Product', url: 'https://cdn.simpleicons.org/producthunt/FF6154' },
       { name: 'Notion', url: 'https://cdn.simpleicons.org/notion/FFFFFF' },
       { name: 'Trello', url: 'https://cdn.simpleicons.org/trello/0052CC' },
+      { name: 'GitHub', url: 'https://cdn.simpleicons.org/github/FFFFFF' },
+      { name: 'Vercel', url: 'https://cdn.simpleicons.org/vercel/FFFFFF' },
     ],
   },
 ];
