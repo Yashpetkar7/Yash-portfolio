@@ -153,6 +153,13 @@ export const projectsData = [
   },
 ];
 
+export const statsData = [
+  { value: 'AI + BI', label: 'Focus Area' },
+  { value: '2+', label: 'Core Systems Built' },
+  { value: '1', label: 'Startup Co-Founded' },
+  { value: 'MAIB', label: "Master's — SP Jain, Dubai" },
+];
+
 export const contactContent = {
   title: 'Contact',
   accent: 'Me',

@@ -28,7 +28,7 @@ export function LabPortalSection() {
             href={LAB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative block mt-12 border border-outline-variant/40 bg-surface-container-low overflow-hidden interactive-card"
+            className="group relative block mt-12 card-elevated rounded-lg overflow-hidden interactive-card"
             aria-label="Open the 3D Lab portfolio in a new tab"
           >
             {/* Live viewport (desktop) or stylized fallback (touch) */}

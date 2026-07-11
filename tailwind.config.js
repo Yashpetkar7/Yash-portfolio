@@ -82,8 +82,9 @@ export default {
       },
       borderRadius: {
         DEFAULT: "0px",
-        lg: "0px",
-        xl: "0px",
+        lg: "12px",
+        xl: "16px",
+        "2xl": "20px",
         full: "9999px",
       },
       animation: {

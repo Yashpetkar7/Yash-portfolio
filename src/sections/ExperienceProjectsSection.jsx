@@ -132,7 +132,7 @@ export function ExperienceProjectsSection() {
               {projectsData.map((project, index) => (
                 <RevealItem key={project.id} className="h-full" threshold={0.12} delay={60 + index * 80}>
                   <TiltCard style={{ height: '100%' }}>
-                    <Card className="h-full border border-outline-variant/20 flex flex-col p-8 group interactive-card">
+                    <Card className="h-full flex flex-col p-8 group interactive-card">
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <h4 className="font-headline text-xl lg:text-2xl font-bold text-on-surface group-hover:text-primary">{project.name}</h4>
                         <div className="flex items-center gap-2 shrink-0 border border-outline-variant/20 rounded-full px-3 py-1 bg-surface">

@@ -28,37 +28,40 @@ export function ContactSection() {
           
           {/* Left Side - Contact Info (Full width now) */}
           <RevealItem
-            className="lg:col-span-12 flex flex-col justify-center max-w-2xl mx-auto text-center"
+            className="lg:col-span-12 flex flex-col justify-center max-w-3xl mx-auto text-center"
             threshold={0.2}
           >
-            <h2 className="font-headline text-5xl md:text-7xl font-black text-on-surface tracking-tight mb-4 leading-none">
-              {contactContent.title} <br className="hidden md:block"/>
+            <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-primary mb-6">
+              // NEXT_MOVE
+            </p>
+            <h2 className="font-headline text-6xl md:text-8xl font-black text-on-surface tracking-tighter mb-6 leading-[0.95] [text-wrap:balance]">
+              {contactContent.title}{' '}
               <span className="text-primary">{contactContent.accent}</span>
             </h2>
-            <p className="text-lg text-on-surface-variant leading-relaxed mb-10 mx-auto">
+            <p className="text-lg text-on-surface-variant leading-relaxed mb-12 mx-auto max-w-xl">
               {contactContent.description}
             </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-6 mt-8">
-              <a
-                href={`tel:${contactContent.phone}`}
-                className="interactive-input group flex items-center justify-center gap-4 p-5 border border-outline-variant/20 hover:border-primary/50 bg-surface-container-low/30 min-w-[280px]"
-              >
-                <span className="material-symbols-outlined text-primary text-2xl">call</span>
-                <span className="font-mono text-lg text-on-surface group-hover:text-primary">
-                  {contactContent.phone}
-                </span>
-              </a>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                 href={`mailto:${contactContent.email}`}
-                className="interactive-input group flex items-center justify-center gap-4 p-5 border border-outline-variant/20 hover:border-primary/50 bg-surface-container-low/30 min-w-[280px]"
+                className="interactive-button group inline-flex items-center justify-center gap-3 rounded-full bg-primary text-black font-label text-sm font-bold tracking-widest uppercase px-10 py-5 hover:bg-primary-dim"
               >
-                <span className="material-symbols-outlined text-primary text-2xl">mail</span>
-                <span className="font-mono text-lg text-on-surface group-hover:text-primary break-all">
-                  {contactContent.email}
-                </span>
+                <span className="material-symbols-outlined text-xl">mail</span>
+                {contactContent.email}
+              </a>
+              <a
+                href={`tel:${contactContent.phone}`}
+                className="interactive-button group inline-flex items-center justify-center gap-3 rounded-full border border-outline-variant/50 text-on-surface font-label text-sm font-bold tracking-widest uppercase px-10 py-5 hover:border-primary hover:text-primary"
+              >
+                <span className="material-symbols-outlined text-xl">call</span>
+                {contactContent.phone}
               </a>
             </div>
+
+            <p className="mt-10 font-mono text-[11px] tracking-[0.2em] uppercase text-on-surface-variant/60">
+              {contactContent.location}
+            </p>
           </RevealItem>
 
 

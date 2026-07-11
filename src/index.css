@@ -29,8 +29,8 @@
   }
 
   section, footer {
-    padding-top: max(6rem, 8vh);
-    padding-bottom: max(6rem, 8vh);
+    padding-top: max(7.5rem, 10vh);
+    padding-bottom: max(7.5rem, 10vh);
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -111,6 +111,22 @@
 
   .glass-panel {
     @apply backdrop-blur-xl bg-surface-container-low/70;
+  }
+
+  /* Apple-grade elevation: gradient surface, inset top-light, deep soft shadow */
+  .card-elevated {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 100%),
+      #131313;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 24px 48px -24px rgba(0, 0, 0, 0.65);
+  }
+
+  .card-elevated:hover {
+    border-color: rgba(184, 253, 75, 0.25);
   }
 
   .terminal-grid {
@@ -214,6 +230,11 @@
 
   .interactive-button:hover {
     transform: translate3d(0, -2px, 0);
+  }
+
+  .interactive-button:active {
+    transform: translate3d(0, 0, 0) scale(0.97);
+    transition-duration: 120ms;
   }
 
   .interactive-card:hover {

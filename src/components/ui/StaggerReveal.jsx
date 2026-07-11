@@ -44,22 +44,21 @@ export function RevealItem({
 }) {
   const { elementRef, isVisible, prefersReducedMotion } = useInViewReveal({ threshold, rootMargin, once: true });
 
+  // Apple-style reveal: rise + de-blur with a long ease-out — no flips, no bounce
   const variants = prefersReducedMotion
     ? {
-        hidden: { opacity: 1, y: 0, scale: 1, rotateX: 0 },
-        visible: { opacity: 1, y: 0, scale: 1, rotateX: 0 },
+        hidden: { opacity: 1, y: 0, filter: 'blur(0px)' },
+        visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
       }
     : {
-        hidden: { opacity: 0, y: distance, scale: 0.96, rotateX: 12 },
+        hidden: { opacity: 0, y: distance, filter: 'blur(10px)' },
         visible: {
           opacity: 1,
           y: 0,
-          scale: 1,
-          rotateX: 0,
+          filter: 'blur(0px)',
           transition: {
-            duration: 0.8,
-            type: 'spring',
-            bounce: 0.25,
+            duration: 0.9,
+            ease: [0.16, 1, 0.3, 1],
             delay: delay / 1000,
           },
         },
@@ -72,7 +71,7 @@ export function RevealItem({
       variants={variants}
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
-      style={{ willChange: 'transform, opacity', transformOrigin: 'top center' }}
+      style={{ willChange: 'transform, opacity, filter' }}
     >
       {children}
     </motion.div>

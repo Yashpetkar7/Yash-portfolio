@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { RevealItem } from '../components/ui/StaggerReveal';
 import { SectionTransitionLine } from '../components/ui/SectionTransitionLine';
-import { aboutContent, skillsData } from '../data/portfolioData';
+import { aboutContent, skillsData, statsData } from '../data/portfolioData';
 
 export function AboutSkillsSection() {
   const sectionRef = useRef(null);
@@ -37,11 +37,27 @@ export function AboutSkillsSection() {
             />
           </RevealItem>
 
-          <RevealItem threshold={0.15} delay={80} className="mt-8 mb-12">
+          <RevealItem threshold={0.15} delay={80} className="mt-8 mb-14">
             <div className="border-l-4 border-primary pl-6 py-2 text-left">
               <p className="font-label text-base md:text-lg lg:text-xl text-[#ababab] leading-relaxed max-w-4xl">
                 {aboutContent.description}
               </p>
+            </div>
+          </RevealItem>
+
+          {/* Big-numbers band — hairline mosaic */}
+          <RevealItem threshold={0.2} delay={90} className="w-full mb-16">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-outline-variant/30 border border-outline-variant/30">
+              {statsData.map((stat) => (
+                <div key={stat.label} className="bg-surface py-8 md:py-10 px-4 text-center">
+                  <div className="font-headline font-bold text-3xl md:text-5xl tracking-tighter text-primary">
+                    {stat.value}
+                  </div>
+                  <div className="mt-3 font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </RevealItem>
 
@@ -56,7 +72,7 @@ export function AboutSkillsSection() {
               {skillsData.map((skill, idx) => (
                 <div
                   key={skill.label}
-                  className="interactive-card border border-outline-variant/30 bg-surface-container-low/60 p-5 md:p-6"
+                  className="interactive-card card-elevated rounded-lg p-5 md:p-6"
                 >
                   <div className="flex items-baseline justify-between mb-1">
                     <h4 className="font-headline font-bold text-lg md:text-xl text-on-surface tracking-tight">
