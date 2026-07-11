@@ -50,6 +50,15 @@
     @apply bg-surface text-on-surface font-body overflow-x-hidden;
   }
 
+  ::selection {
+    background: rgba(184, 253, 75, 0.25);
+    color: #ffffff;
+  }
+
+  input, textarea {
+    caret-color: #b8fd4b;
+  }
+
   @media (pointer: fine) {
     body {
       cursor: none;
@@ -111,6 +120,41 @@
 
   .glass-panel {
     @apply backdrop-blur-xl bg-surface-container-low/70;
+  }
+
+  /* Editorial furniture: giant ghosted section numerals */
+  .index-watermark {
+    position: absolute;
+    top: 1.5rem;
+    right: -0.75rem;
+    z-index: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(7rem, 17vw, 15rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Stroke-only signature name — fills faintly on hover */
+  .outline-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(3rem, 12.5vw, 12rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(184, 253, 75, 0.18);
+    white-space: nowrap;
+    user-select: none;
+    transition: color 0.6s ease;
+  }
+
+  .outline-name:hover {
+    color: rgba(184, 253, 75, 0.08);
   }
 
   /* Apple-grade elevation: gradient surface, inset top-light, deep soft shadow */

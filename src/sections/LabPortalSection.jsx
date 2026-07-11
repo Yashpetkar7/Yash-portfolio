@@ -12,7 +12,8 @@ export function LabPortalSection() {
     window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
 
   return (
-    <section ref={elementRef} id="lab-portal" className="relative">
+    <section ref={elementRef} id="lab-portal" className="relative overflow-hidden">
+      <span aria-hidden="true" className="index-watermark">03</span>
       <div className="max-w-7xl mx-auto">
         <RevealItem threshold={0.2}>
           <SectionHeading

@@ -24,6 +24,19 @@ export default function App() {
     sessionStorage.setItem('splashPlayed', 'true');
   }, []);
 
+  // Tab-title easter egg: stay memorable in a crowded tab bar
+  useEffect(() => {
+    const original = document.title;
+    const onVisibility = () => {
+      document.title = document.hidden ? '⚡ Still here — Yash Petkar' : original;
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      document.title = original;
+    };
+  }, []);
+
   useEffect(() => {
     if (showIntro) {
       document.body.style.overflow = 'hidden';

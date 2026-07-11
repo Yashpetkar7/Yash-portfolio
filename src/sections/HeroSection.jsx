@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import ScrambleText from '../components/ui/ScrambleText';
+import Magnetic from '../components/ui/Magnetic';
 import { RevealItem } from '../components/ui/StaggerReveal';
 import { useInViewReveal } from '../hooks/useInViewReveal';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
@@ -117,8 +118,8 @@ export function HeroSection({ introActive = true }) {
             </p>
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 md:mt-12 mb-10">
-              <a href="#experience-projects" className="btn-primary interactive-button">VIEW_WORK</a>
-              <a href="#contact" className="btn-secondary interactive-button">CONTACT</a>
+              <Magnetic><a href="#experience-projects" className="btn-primary interactive-button">VIEW_WORK</a></Magnetic>
+              <Magnetic><a href="#contact" className="btn-secondary interactive-button">CONTACT</a></Magnetic>
               <span className="hidden lg:inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant/50">
                 <kbd className="border border-outline-variant/50 px-1.5 py-0.5 text-primary/80">/</kbd>
                 open terminal

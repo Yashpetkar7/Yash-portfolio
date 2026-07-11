@@ -1,6 +1,7 @@
 import { contactContent, socialLinks, footerContent } from '../data/portfolioData';
 import { RevealItem } from '../components/ui/StaggerReveal';
 import { SectionTransitionLine } from '../components/ui/SectionTransitionLine';
+import Magnetic from '../components/ui/Magnetic';
 
 function getSocialIconSrc(icon) {
   if (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('data:') || icon.startsWith('/')) {
@@ -15,6 +16,7 @@ export function ContactSection() {
   return (
     <section id="contact" className="relative bg-surface border-t border-outline-variant/20 overflow-hidden text-left">
       <SectionTransitionLine />
+      <span aria-hidden="true" className="index-watermark">04</span>
       <div
         className="absolute inset-0 opacity-5 pointer-events-none"
         style={{
@@ -43,20 +45,24 @@ export function ContactSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href={`mailto:${contactContent.email}`}
-                className="interactive-button group inline-flex items-center justify-center gap-3 rounded-full bg-primary text-black font-label text-sm font-bold tracking-widest uppercase px-10 py-5 hover:bg-primary-dim"
-              >
-                <span className="material-symbols-outlined text-xl">mail</span>
-                {contactContent.email}
-              </a>
-              <a
-                href={`tel:${contactContent.phone}`}
-                className="interactive-button group inline-flex items-center justify-center gap-3 rounded-full border border-outline-variant/50 text-on-surface font-label text-sm font-bold tracking-widest uppercase px-10 py-5 hover:border-primary hover:text-primary"
-              >
-                <span className="material-symbols-outlined text-xl">call</span>
-                {contactContent.phone}
-              </a>
+              <Magnetic strength={0.25}>
+                <a
+                  href={`mailto:${contactContent.email}`}
+                  className="interactive-button group inline-flex items-center justify-center gap-3 rounded-full bg-primary text-black font-label text-sm font-bold tracking-widest uppercase px-10 py-5 hover:bg-primary-dim"
+                >
+                  <span className="material-symbols-outlined text-xl">mail</span>
+                  {contactContent.email}
+                </a>
+              </Magnetic>
+              <Magnetic strength={0.25}>
+                <a
+                  href={`tel:${contactContent.phone}`}
+                  className="interactive-button group inline-flex items-center justify-center gap-3 rounded-full border border-outline-variant/50 text-on-surface font-label text-sm font-bold tracking-widest uppercase px-10 py-5 hover:border-primary hover:text-primary"
+                >
+                  <span className="material-symbols-outlined text-xl">call</span>
+                  {contactContent.phone}
+                </a>
+              </Magnetic>
             </div>
 
             <p className="mt-10 font-mono text-[11px] tracking-[0.2em] uppercase text-on-surface-variant/60">
@@ -67,8 +73,13 @@ export function ContactSection() {
 
         </div>
 
+        {/* Signature watermark */}
+        <div aria-hidden="true" className="mt-28 -mb-6 flex justify-center overflow-hidden">
+          <span className="outline-name">YASH PETKAR</span>
+        </div>
+
         {/* Bottom Footer Line */}
-        <div className="mt-24 pt-8 border-t border-outline-variant/20 flex flex-col items-center gap-6 font-mono text-[11px] text-[#888]">
+        <div className="mt-8 pt-8 border-t border-outline-variant/20 flex flex-col items-center gap-6 font-mono text-[11px] text-[#888]">
           <p>{footerContent.copyright}</p>
           
           {/* Social Icons Row */}

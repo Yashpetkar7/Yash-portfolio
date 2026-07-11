@@ -15,6 +15,7 @@ export function AboutSkillsSection() {
   return (
     <section ref={sectionRef} id="about-skills" className="relative bg-surface border-t border-outline-variant/20 block-section overflow-hidden">
       <SectionTransitionLine />
+      <span aria-hidden="true" className="index-watermark">01</span>
       <motion.div
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{

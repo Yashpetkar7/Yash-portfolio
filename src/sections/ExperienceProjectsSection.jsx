@@ -45,8 +45,9 @@ function TiltCard({ children, style = {} }) {
 
 export function ExperienceProjectsSection() {
   return (
-    <section id="experience-projects" className="relative bg-surface-container-low border-t border-outline-variant/20 terminal-grid">
+    <section id="experience-projects" className="relative overflow-hidden bg-surface-container-low border-t border-outline-variant/20 terminal-grid">
       <SectionTransitionLine />
+      <span aria-hidden="true" className="index-watermark">02</span>
       <div className="max-w-7xl mx-auto">
         <RevealItem className="mb-12" threshold={0.2}>
           <SectionHeading

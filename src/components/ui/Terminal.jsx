@@ -22,6 +22,12 @@ const BANNER = [
   { t: 'txt', s: "Type 'help' to list commands. Tab completes, ↑ recalls." },
 ];
 
+function greetingLine() {
+  const hour = new Date().getHours();
+  const part = hour < 5 ? 'BURNING THE MIDNIGHT OIL' : hour < 12 ? 'GOOD MORNING' : hour < 17 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
+  return { t: 'dim', s: `${part}, VISITOR.` };
+}
+
 function line(t, s) {
   return { t, s };
 }
@@ -136,11 +142,13 @@ const COMMANDS = {
   date: () => [line('txt', new Date().toString())],
 };
 
-const COMMAND_NAMES = [...Object.keys(COMMANDS), 'sudo hire-me', 'clear', 'exit'];
+const COMMAND_NAMES = [...Object.keys(COMMANDS), 'sudo hire-me', 'matrix', 'clear', 'exit'];
 
 export default function Terminal({ disabled = false }) {
   const [open, setOpen] = useState(false);
-  const [lines, setLines] = useState(BANNER);
+  const [lines, setLines] = useState(() => [...BANNER, greetingLine()]);
+  const [matrixOn, setMatrixOn] = useState(false);
+  const matrixCanvasRef = useRef(null);
   const [input, setInput] = useState('');
   const [cmdHistory, setCmdHistory] = useState([]);
   const [historyIdx, setHistoryIdx] = useState(-1);
@@ -177,6 +185,42 @@ export default function Terminal({ disabled = false }) {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [lines, open]);
+
+  // `matrix` easter egg: rain code over the whole site for a few seconds
+  useEffect(() => {
+    if (!matrixOn) return;
+    const canvas = matrixCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const CELL = 14;
+    const cols = Math.floor(canvas.width / CELL);
+    const drops = Array(cols).fill(1);
+    const glyphs = 'アカサタナハマヤラワ0123456789ABCDEF$#@';
+    let frameId;
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#b8fd4b';
+      ctx.font = `${CELL}px monospace`;
+      drops.forEach((y, i) => {
+        ctx.fillText(glyphs[(Math.random() * glyphs.length) | 0], i * CELL, y * CELL);
+        if (y * CELL > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i] += 1;
+      });
+      frameId = requestAnimationFrame(draw);
+    };
+    frameId = requestAnimationFrame(draw);
+    const stopTimer = setTimeout(() => setMatrixOn(false), 7000);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      clearTimeout(stopTimer);
+    };
+  }, [matrixOn]);
 
   const append = useCallback((newLines) => {
     setLines((prev) => [...prev, ...newLines]);
@@ -222,6 +266,11 @@ export default function Terminal({ disabled = false }) {
       if (lower === 'sudo hire-me' || lower === 'hire-me' || lower === 'sudo hire me') {
         append([echo]);
         runHireMe();
+        return;
+      }
+      if (lower === 'matrix') {
+        append([echo, line('ok', 'wake up, neo… (7s)')]);
+        setMatrixOn(true);
         return;
       }
       const handler = COMMANDS[lower];
@@ -278,6 +327,14 @@ export default function Terminal({ disabled = false }) {
         >
           &gt;_ terminal
         </button>
+      )}
+
+      {matrixOn && (
+        <canvas
+          ref={matrixCanvasRef}
+          className="fixed inset-0 z-[880] pointer-events-none"
+          aria-hidden="true"
+        />
       )}
 
       <AnimatePresence>
