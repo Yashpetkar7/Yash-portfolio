@@ -10,36 +10,7 @@ export function AboutSkillsSection() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['-15%', '15%']);
 
-  // Flatten all icons for the ticker
-  const allIcons = skillsData.flatMap(skill => skill.icons);
-  // Split into two halves for the two rows
-  const midpoint = Math.ceil(allIcons.length / 2);
-  const row1Icons = allIcons.slice(0, midpoint);
-  const row2Icons = allIcons.slice(midpoint);
-
-  // Helper to render duplicated track for seamless scroll
-  const renderTrack = (icons, direction) => (
-    <div className={`ticker-container ${direction}`}>
-      <div className={`ticker-track ${direction}`}>
-        {/* Render two sets of icons for infinite scroll illusion */}
-        {[...icons, ...icons].map((icon, idx) => (
-          <div key={`${icon.name}-${idx}`} className="flex flex-col items-center gap-3 shrink-0 py-4 px-6" style={{ width: '120px' }}>
-            <div className="h-14 w-14 flex items-center justify-center bg-surface-container-low/50 rounded p-2 border border-outline-variant/20 hover:border-primary/50 transition-colors">
-              <img
-                src={icon.url}
-                alt={icon.name}
-                className="w-full h-full object-contain"
-                onError={e => e.target.style.opacity = '0'}
-              />
-            </div>
-            <span className="font-mono text-[9px] text-[#888] tracking-widest uppercase text-center w-full truncate">
-              {icon.name}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const totalTech = skillsData.reduce((sum, skill) => sum + skill.icons.length, 0);
 
   return (
     <section ref={sectionRef} id="about-skills" className="relative bg-surface border-t border-outline-variant/20 block-section overflow-hidden">
@@ -75,10 +46,13 @@ export function AboutSkillsSection() {
           </RevealItem>
 
           <RevealItem threshold={0.15} delay={100} className="w-full text-left">
-            <h3 className="font-mono text-[10px] text-primary tracking-widest uppercase mb-6 pl-2 border-l border-primary/30">MY TECH STACK</h3>
+            <div className="flex items-baseline justify-between mb-6 pl-2 border-l border-primary/30">
+              <h3 className="font-mono text-[10px] text-primary tracking-widest uppercase">MY TECH STACK</h3>
+              <span className="font-mono text-[10px] text-on-surface-variant/50 tracking-widest uppercase">{totalTech} TOOLS · 4 DOMAINS</span>
+            </div>
 
             {/* Category grid */}
-            <div className="grid md:grid-cols-2 gap-4 mb-12">
+            <div className="grid md:grid-cols-2 gap-4">
               {skillsData.map((skill, idx) => (
                 <div
                   key={skill.label}
@@ -99,14 +73,15 @@ export function AboutSkillsSection() {
                         key={icon.name}
                         className="flex items-center gap-1.5 border border-outline-variant/30 bg-surface px-2.5 py-1.5 font-mono text-[10px] tracking-wider uppercase text-on-surface-variant hover:border-primary/50 hover:text-on-surface transition-colors"
                       >
+                        {/* Label stays if the icon fails, so no chip is ever blank */}
                         <img
                           src={icon.url}
                           alt=""
                           width={14}
                           height={14}
                           loading="lazy"
-                          className="object-contain"
-                          onError={e => e.target.style.display = 'none'}
+                          className="object-contain shrink-0"
+                          onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }}
                         />
                         {icon.name}
                       </span>
@@ -114,12 +89,6 @@ export function AboutSkillsSection() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* Ticker */}
-            <div className="flex flex-col gap-6 overflow-hidden">
-              {renderTrack(row1Icons, 'left')}
-              {renderTrack(row2Icons, 'right')}
             </div>
           </RevealItem>
         </div>
