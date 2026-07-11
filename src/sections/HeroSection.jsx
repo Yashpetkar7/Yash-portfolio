@@ -1,4 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import ScrambleText from '../components/ui/ScrambleText';
 import { RevealItem } from '../components/ui/StaggerReveal';
 import { useInViewReveal } from '../hooks/useInViewReveal';
@@ -44,10 +45,26 @@ export function HeroSection({ introActive = true }) {
   const { elementRef: heroActiveRef, isVisible: isHeroActive } = useInViewReveal({ threshold: 0.08, rootMargin: '80px 0px', once: false });
   const shouldRender3D = isHeroVisible && !prefersReducedMotion && canUseWebGL;
 
+  const scrollTargetRef = useRef(null);
   const setHeroRefs = useCallback((node) => {
     heroLoadRef.current = node;
     heroActiveRef.current = node;
+    scrollTargetRef.current = node;
   }, [heroActiveRef, heroLoadRef]);
+
+  // Scroll choreography: as the hero scrolls out, the name shrinks toward the
+  // navbar while the supporting content fades first — an Apple-style handoff.
+  const { scrollYProgress } = useScroll({ target: scrollTargetRef, offset: ['start start', 'end start'] });
+  const nameScale = useTransform(scrollYProgress, [0, 1], [1, 0.55]);
+  const nameY = useTransform(scrollYProgress, [0, 1], [0, -70]);
+  const nameOpacity = useTransform(scrollYProgress, [0, 0.55, 0.9], [1, 1, 0]);
+  const supportOpacity = useTransform(scrollYProgress, [0, 0.3, 0.65], [1, 1, 0]);
+  const supportY = useTransform(scrollYProgress, [0, 0.65], [0, -36]);
+  const statusOpacity = useTransform(scrollYProgress, [0, 0.2, 0.45], [1, 1, 0]);
+  const photoY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const photoScale = useTransform(scrollYProgress, [0, 1], [1, 0.93]);
+
+  const choreo = (styles) => (prefersReducedMotion ? {} : styles);
 
   return (
     <section ref={setHeroRefs} id="hero" className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-20 overflow-hidden">
@@ -74,7 +91,7 @@ export function HeroSection({ introActive = true }) {
           delay={80}
         >
           {/* Live availability line */}
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1 mb-5 font-mono text-[11px] md:text-xs tracking-[0.2em] uppercase">
+          <motion.div style={choreo({ opacity: statusOpacity })} className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1 mb-5 font-mono text-[11px] md:text-xs tracking-[0.2em] uppercase">
             <span className="flex items-center gap-2 text-primary">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
@@ -83,34 +100,39 @@ export function HeroSection({ introActive = true }) {
               Open to AI · Data & Product roles
             </span>
             <span className="text-on-surface-variant/50">DXB {clocks.dxb} · BOM {clocks.bom}</span>
-          </div>
+          </motion.div>
 
-          <h1 className="hero-title-container text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] xl:text-[8rem] font-black font-headline tracking-tighter text-on-surface leading-[0.85] max-w-full overflow-visible">
+          <motion.h1
+            style={choreo({ scale: nameScale, y: nameY, opacity: nameOpacity })}
+            className="hero-title-container origin-center lg:origin-top-left text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] xl:text-[8rem] font-black font-headline tracking-tighter text-on-surface leading-[0.85] max-w-full overflow-visible"
+          >
             <div className="kinetic-text"><ScrambleText text={heroContent.firstName} trigger={introActive} delay={200} style={{ display: 'block' }} /></div>
             <div className="kinetic-text"><ScrambleText text={heroContent.lastName} trigger={introActive} delay={450} style={{ display: 'block' }} /></div>
-          </h1>
+          </motion.h1>
 
-          <p className="mt-6 md:mt-8 max-w-xl font-mono text-base md:text-lg text-on-surface-variant min-h-[48px]">
-            {displayText}
-            <span className="animate-blink">|</span>
-          </p>
+          <motion.div style={choreo({ opacity: supportOpacity, y: supportY })}>
+            <p className="mt-6 md:mt-8 max-w-xl font-mono text-base md:text-lg text-on-surface-variant min-h-[48px]">
+              {displayText}
+              <span className="animate-blink">|</span>
+            </p>
 
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 md:mt-12 mb-10">
-            <a href="#experience-projects" className="btn-primary interactive-button">VIEW_WORK</a>
-            <a href="#contact" className="btn-secondary interactive-button">CONTACT</a>
-            <span className="hidden lg:inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant/50">
-              <kbd className="border border-outline-variant/50 px-1.5 py-0.5 text-primary/80">/</kbd>
-              open terminal
-            </span>
-          </div>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 md:mt-12 mb-10">
+              <a href="#experience-projects" className="btn-primary interactive-button">VIEW_WORK</a>
+              <a href="#contact" className="btn-secondary interactive-button">CONTACT</a>
+              <span className="hidden lg:inline-flex items-center gap-2 font-mono text-[11px] text-on-surface-variant/50">
+                <kbd className="border border-outline-variant/50 px-1.5 py-0.5 text-primary/80">/</kbd>
+                open terminal
+              </span>
+            </div>
 
-          <div className="flex gap-4 flex-wrap pointer-events-auto justify-center lg:justify-start border-t border-outline-variant/20 pt-8 w-full max-w-lg mt-8">
-            {socialLinks.map((social) => (
-              <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300" title={social.label}>
-                <img src={getSocialIconSrc(social.icon)} alt={social.label} width={22} height={22} style={{ objectFit: 'contain' }} />
-              </a>
-            ))}
-          </div>
+            <div className="flex gap-4 flex-wrap pointer-events-auto justify-center lg:justify-start border-t border-outline-variant/20 pt-8 w-full max-w-lg mt-8">
+              {socialLinks.map((social) => (
+                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300" title={social.label}>
+                  <img src={getSocialIconSrc(social.icon)} alt={social.label} width={22} height={22} style={{ objectFit: 'contain' }} />
+                </a>
+              ))}
+            </div>
+          </motion.div>
         </RevealItem>
 
         {/* Right Side - Photo Card */}
@@ -119,7 +141,7 @@ export function HeroSection({ introActive = true }) {
           threshold={0.25}
           delay={140}
         >
-          <div style={{ position: 'relative', width: '100%', maxWidth: '340px', margin: '0 auto' }}>
+          <motion.div style={{ position: 'relative', width: '100%', maxWidth: '340px', margin: '0 auto', ...choreo({ y: photoY, scale: photoScale }) }}>
             <div className="group interactive-card" style={{ border: '1px solid rgba(184,253,75,0.2)', background: '#131313', padding: '16px', position: 'relative', overflow: 'hidden' }}>
               <img
                 src="/images/profile.jpg"
@@ -133,7 +155,7 @@ export function HeroSection({ introActive = true }) {
               <div style={{ position:'absolute', bottom:4, left:4, width:16, height:16, borderBottom:'2px solid #b8fd4b', borderLeft:'2px solid #b8fd4b' }} />
               <div style={{ position:'absolute', bottom:4, right:4, width:16, height:16, borderBottom:'2px solid #b8fd4b', borderRight:'2px solid #b8fd4b' }} />
             </div>
-          </div>
+          </motion.div>
         </RevealItem>
       </div>
     </section>

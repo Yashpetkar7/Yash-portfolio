@@ -1,6 +1,7 @@
 import { heroContent, footerContent } from '../../data/portfolioData';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 const navLinks = [
   { label: 'ABOUT', href: '#about-skills', id: 'about-skills' },
@@ -14,6 +15,13 @@ const SECOND_SITE_URL = 'https://yash-portfolio-lab.vercel.app/';
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Handoff: the brand fades in as the hero name shrinks out
+  const { scrollY } = useScroll();
+  const brandOpacity = useTransform(scrollY, [220, 460], [0, 1]);
+  const brandY = useTransform(scrollY, [220, 460], [10, 0]);
+  const brandStyle = prefersReducedMotion || menuOpen ? {} : { opacity: brandOpacity, y: brandY };
 
   // Lock scroll when mobile menu is open
   useEffect(() => {
@@ -59,11 +67,15 @@ export function Navbar() {
   return (
     <>
       <header className={`fixed top-0 w-full flex justify-between items-center px-6 h-16 z-50 transition-colors duration-300 ${menuOpen ? 'bg-transparent border-transparent' : 'bg-surface/90 backdrop-blur-md border-b border-surface-container-high'}`}>
-        {/* Left - Logo */}
+        {/* Left - Logo (fades in as the hero name hands off) */}
         <div className="flex-1 flex justify-start">
-          <a href="#hero" className="text-xl font-black text-primary tracking-tighter font-headline relative z-50 uppercase">
+          <motion.a
+            href="#hero"
+            style={brandStyle}
+            className="text-xl font-black text-primary tracking-tighter font-headline relative z-50 uppercase"
+          >
             {heroContent.fullName}
-          </a>
+          </motion.a>
         </div>
 
         {/* Center - Links (Desktop) */}
